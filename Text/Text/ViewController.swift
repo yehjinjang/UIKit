@@ -12,21 +12,34 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let attributedString = NSMutableAttributedString(string: "Hello, World")
-        attributedString.addAttribute(.font, value: UIFont.italicSystemFont(ofSize: 20), range: NSRange(location: 0, length: 5))
-        attributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: NSRange(location: 7, length: 5))
-        attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: 12))
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let imageView = UIImageView(image: UIImage(systemName: "creditcard"))
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: 30),
+            imageView.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        stackView.addArrangedSubview(imageView)
         
         let label = UILabel()
-        label.attributedText = attributedString
+        label.text = "Credit Card"
+        label.font = UIFont.systemFont(ofSize: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(label)
         
-        view.addSubview(label)
+        view.addSubview(stackView)
         
         NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.topAnchor.constraint(equalTo: view.topAnchor, constant: 200)
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 250)
         ])
+
     }
 
 
