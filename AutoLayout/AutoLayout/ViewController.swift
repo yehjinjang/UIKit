@@ -12,29 +12,39 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let label = UILabel()
-        label.backgroundColor = .lightGray
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "This is a"
-        view.addSubview(label)
+        let containerView = UIView()
+        containerView.backgroundColor = .lightGray
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(containerView)
         
-        // 최소 및 최대 너비 제약 조건 설정
-        let maxWidth: CGFloat = 200
-        let maxHeight: CGFloat = 200
-        
-        // 제약 조건 설정
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            label.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20),
-            label.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth),
-            label.heightAnchor.constraint(lessThanOrEqualToConstant: maxHeight),
-            label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
+            containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            containerView.widthAnchor.constraint(equalToConstant: 300),
+            containerView.heightAnchor.constraint(equalToConstant: 200)
         ])
         
-        // 텍스트 길이를 동적으로 변경
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            label.text = "This is an even longer text that should definitely exceed the maximum width constraint of the label. The maximum width constraint should keep the label's width within the bounds we set.This is an even longer text that should definitely exceed the maximum width constraint of the label. The maximum width constraint should keep the label's width within the bounds we set."
-        }
+        let subview1 =  UIView()
+        subview1.backgroundColor = .red
+        subview1.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(subview1)
+        
+        let subview2 = UIView()
+        subview2.backgroundColor = .blue
+        subview2.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(subview2)
+        
+        NSLayoutConstraint.activate([
+            subview1.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
+            subview1.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0),
+            subview1.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.66),
+            subview1.heightAnchor.constraint(equalToConstant: 50),
+
+            subview2.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20),
+            subview2.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0),
+            subview2.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.33),
+            subview2.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
     }
 }
