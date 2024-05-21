@@ -9,34 +9,46 @@
 import UIKit
 
 class ViewController: UIViewController {
-    let datePicker = {
-        let picker = UIDatePicker()
-        picker.translatesAutoresizingMaskIntoConstraints = false
-        return picker
-    }()
+    
+    // iOS에 자원이 부족하면 호출되는 함수
+    override func didReceiveMemoryWarning() {
+        
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+            
+        let button = UIButton()
+        var config = UIButton.Configuration.filled()
+        config.title = "Color Picker"
+        config.cornerStyle = .capsule
+        button.configuration = config
+        button.translatesAutoresizingMaskIntoConstraints = false
         
-        let today = Date()
-        var dateComponents = DateComponents()
-        dateComponents.year = -1
-        let oneYearAgo = Calendar.current.date(byAdding: dateComponents, to: today)
-        dateComponents.year = 1
-        let oneYearFromNow = Calendar.current.date(byAdding: dateComponents, to: today)
+        button.addAction(UIAction { [unowned self] _ in
+            let colorPicker = UIColorPickerViewController()
+            colorPicker.delegate = self
+            colorPicker.supportsAlpha = false
+            colorPicker.selectedColor = self.view.backgroundColor ?? .white
+            self.present(colorPicker, animated: true)
+        }, for: .touchUpInside)
         
-        datePicker.minimumDate = oneYearAgo
-        datePicker.maximumDate = oneYearFromNow
-        
-        datePicker.addAction(UIAction { [weak self] _ in
-            print("sender: \(self?.datePicker.date.formatted() ?? "N/A")")
-        }, for: .valueChanged)
-        
-        view.addSubview(datePicker)
+        self.view.addSubview(button)
         
         NSLayoutConstraint.activate([
-            datePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            datePicker.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            button.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
         
+    }
+}
+
+extension ViewController: UIColorPickerViewControllerDelegate {
+    func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
+        view.backgroundColor = viewController.selectedColor
+    }
+    
+    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+        dismiss(animated: true)
     }
 }
