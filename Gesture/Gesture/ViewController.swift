@@ -19,14 +19,14 @@ class ViewController: UIViewController {
         
         view.addSubview(rectangle)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))\
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         tapGesture.numberOfTapsRequired = 2
         rectangle.addGestureRecognizer(tapGesture)
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer){
         if let view = sender.view {
-            view.backgroundColor(view.backgroundColor == .green) ? .red : .green
+            view.backgroundColor = (view.backgroundColor == .green) ? .red : .green
         }
     }
 
