@@ -19,7 +19,7 @@ class ViewController: UIViewController {
         
         view.addSubview(rectangle)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hendleTap))\
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))\
         tapGesture.numberOfTapsRequired = 2
         rectangle.addGestureRecognizer(tapGesture)
     }
