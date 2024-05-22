@@ -8,24 +8,22 @@
 import UIKit
 
 class ViewController: UIViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let imageView = UIImageView(image: UIImage(systemName: "star.fill"))
-        imageView.frame = CGRect(x: 120, y: 300, width: 200, height: 200)
+        imageView.frame = CGRect(x: view.bounds.midX-100, y: view.bounds.midY-100, width: 200, height: 200)
         imageView.isUserInteractionEnabled = true
-        
         view.addSubview(imageView)
         
-        let gesture = UIPinchGestureRecognizer(target: self, action: #selector(handleGesture))
+        let gesture = UIRotationGestureRecognizer(target: self, action: #selector(handleGesture))
         imageView.addGestureRecognizer(gesture)
     }
 
-    @objc func handleGesture(_ sender: UIPinchGestureRecognizer) {
-        print(sender.scale)
+    @objc func handleGesture(_ sender: UIRotationGestureRecognizer) {
         if let view = sender.view {
-            view.transform = view.transform.scaledBy(x: sender.scale, y: sender.scale)
+            view.transform = view.transform.rotated(by: sender.rotation)
+            sender.rotation = 0
         }
     }
 
