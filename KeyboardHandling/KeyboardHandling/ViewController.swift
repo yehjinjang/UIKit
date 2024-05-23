@@ -37,6 +37,7 @@ class ViewController: UIViewController {
     }
     //키보드를 내리는 뷰 설정
     @objc func tapHandler(_ sender: UIView){
+        // cursor 를 날려서 키보드가없어지게 하는 것임 
         textField.resignFirstResponder()
     }
     
@@ -55,7 +56,7 @@ class ViewController: UIViewController {
     @objc func keyboardWillHide(_ notificatioin: NSNotification) {
         print("keyboard down")
         if view.frame.origin.y != 0 {
-            view.frame.origin.y = 0 
+            view.frame.origin.y = 0
         }
     }
 
