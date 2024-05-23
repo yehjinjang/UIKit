@@ -9,50 +9,39 @@ import UIKit
 
 struct Animal {
     let name: String
-}
-
-struct AnimalCategory {
-    let category: String
-    let animals: [Animal]
+    let image: UIImage
 }
 
 class ViewController: UIViewController, UITableViewDataSource {
-    
-    let categories = [
-        AnimalCategory(category: "포유류", animals: [Animal(name: "고양이"), Animal(name: "강아지")]),
-        AnimalCategory(category: "파충류", animals: [Animal(name: "거북이"), Animal(name: "도마뱀")])
+    let animals = [
+        Animal(name: "고양이", image: UIImage(systemName: "cat")!),
+        Animal(name: "강아지", image: UIImage(systemName: "dog")!),
+        Animal(name: "토끼", image: UIImage(systemName: "hare")!)
     ]
-    
+     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 테이블 스타일 변경 가능 (생성자 함수에서)
-        let tableView = UITableView(frame: view.bounds, style: .insetGrouped)
+        let tableView = UITableView(frame: view.bounds)
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         view.addSubview(tableView)
     }
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return categories.count
-    }
     
+    // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories[section].animals.count
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return categories[section].category
+        animals.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") ?? UITableViewCell(style: .default, reuseIdentifier: "cell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         var config = cell.defaultContentConfiguration()
-        config.text = categories[indexPath.section].animals[indexPath.row].name
+        config.text = animals[indexPath.row].name
+        config.image = animals[indexPath.row].image
         cell.contentConfiguration = config
         return cell
     }
-
+    
+    
 
 }
-
