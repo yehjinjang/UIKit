@@ -29,7 +29,19 @@ class ViewController: UIViewController {
         let extraButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(extraButtonTapped))
         
         self.navigationItem.rightBarButtonItems = [rightButton, extraButton]
+        
+        
+        let button = UIButton(type: .system)
+        button.setTitle("next page", for: .normal)
+        button.addAction(UIAction { [ weak self] _ in
+            let nextViewController = UIViewController()
+            self?.show(nextViewController, sender: nil)
+        }, for: .touchUpInside)
+        
+        button.frame = CGRect(x: 100, y: 100, width: 200, height: 50)
+        view.addSubview(button)
     }
+    // 연결되게 하려면 여기에 다른걸 link 하면 되겠지?
     
     @objc func leftButtonTapped() {
         print("왼쪽 버튼 탭됨")
