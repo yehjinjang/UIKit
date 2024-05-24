@@ -7,29 +7,34 @@
 
 
 import UIKit
+import UserNotifications
 
 protocol AddToDoViewControllerDelegate: AnyObject {
     func didAddToDo(_ toDo: ToDo)
     func didEditToDo(_ toDo: ToDo, at index: Int)
 }
 
-
 class AddToDoViewController: UIViewController {
     var textField: UITextField!
     var datePicker: UIDatePicker!
     var isRecurringSwitch: UISwitch!
     weak var delegate: AddToDoViewControllerDelegate?
+    
+    var toDo: ToDo?
+    var index: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Add ToDo"
+        self.title = toDo == nil ? "Add To-Do" : "Edit To-Do"
         view.backgroundColor = .white
         setupNavigationBar()
         setupTextField()
         setupDatePicker()
         setupRecurringSwitch()
+        loadData()
     }
 
+    // 네비게이션 바 설정 함수
     func setupNavigationBar() {
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem = cancelButton
@@ -37,9 +42,10 @@ class AddToDoViewController: UIViewController {
         navigationItem.rightBarButtonItem = saveButton
     }
 
+    // 할 일 제목 입력 텍스트 필드 설정 함수
     func setupTextField() {
         textField = UITextField()
-        textField.placeholder = "Enter ToDo"
+        textField.placeholder = "Insert To-Do"
         textField.borderStyle = .roundedRect
         view.addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -51,6 +57,7 @@ class AddToDoViewController: UIViewController {
         ])
     }
 
+    // 날짜 선택기 설정 함수
     func setupDatePicker() {
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .dateAndTime
@@ -64,6 +71,7 @@ class AddToDoViewController: UIViewController {
         ])
     }
 
+    // 반복 작업 스위치 설정 함수
     func setupRecurringSwitch() {
         let label = UILabel()
         label.text = "Repeat Weekly"
@@ -83,24 +91,40 @@ class AddToDoViewController: UIViewController {
         ])
     }
 
+    // 기존 할 일 데이터를 로드하는 함수
+    func loadData() {
+        if let toDo = toDo {
+            textField.text = toDo.title
+            datePicker.date = toDo.dueDate ?? Date()
+            isRecurringSwitch.isOn = toDo.isRecurring
+        }
+    }
+
+    // 취소 버튼 액션 함수
     @objc func cancel() {
         dismiss(animated: true, completion: nil)
     }
 
+    // 저장 버튼 액션 함수
     @objc func save() {
         guard let text = textField.text, !text.isEmpty else { return }
         let toDo = ToDo(
             title: text,
-            isCompleted: false,
-            isFavorite: false,
+            isCompleted: self.toDo?.isCompleted ?? false,
+            isFavorite: self.toDo?.isFavorite ?? false,
             dueDate: datePicker.date,
             isRecurring: isRecurringSwitch.isOn
         )
+        if let index = index {
+            delegate?.didEditToDo(toDo, at: index)
+        } else {
+            delegate?.didAddToDo(toDo)
+        }
         scheduleNotification(for: toDo)
-        delegate?.didAddToDo(toDo)
         dismiss(animated: true, completion: nil)
     }
 
+    // 알림 스케줄링 함수
     func scheduleNotification(for toDo: ToDo) {
         let content = UNMutableNotificationContent()
         content.title = "Reminder"
@@ -119,7 +143,6 @@ class AddToDoViewController: UIViewController {
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
-
     /*
      // MARK: - Navigation
      

@@ -15,12 +15,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "To-Do List"
-        setupTableView()
-        setupNavigationBar()
-        loadData()
-        requestNotificationAuthorization()
+        setupTableView() // 테이블 뷰 설정
+        setupNavigationBar() // 네비게이션 바 설정
+        loadData() // 저장된 데이터 로드
+        requestNotificationAuthorization() // 알림 권한 요청
     }
 
+    // 테이블 뷰 설정 함수
     func setupTableView() {
         tableView = UITableView()
         tableView.delegate = self
@@ -36,11 +37,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         ])
     }
 
+    // 네비게이션 바 설정 함수
     func setupNavigationBar() {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addToDo))
         navigationItem.rightBarButtonItem = addButton
     }
 
+    // 새로운 할 일 추가 함수
     @objc func addToDo() {
         let addVC = AddToDoViewController()
         addVC.delegate = self
@@ -49,6 +52,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         present(navController, animated: true, completion: nil)
     }
 
+    // 저장된 할 일 데이터 로드 함수
     func loadData() {
         if let data = UserDefaults.standard.data(forKey: "todos"),
            let savedTodos = try? JSONDecoder().decode([ToDo].self, from: data) {
@@ -57,16 +61,19 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         todos.sort(by: { ($0.dueDate ?? Date.distantFuture) < ($1.dueDate ?? Date.distantFuture) })
     }
 
+    // 할 일 데이터 저장 함수
     func saveData() {
         if let data = try? JSONEncoder().encode(todos) {
             UserDefaults.standard.set(data, forKey: "todos")
         }
     }
 
+    // 테이블 뷰 행의 개수를 반환하는 함수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return todos.count
     }
 
+    // 테이블 뷰 셀을 구성하는 함수
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoCell", for: indexPath)
         let toDo = todos[indexPath.row]
@@ -83,13 +90,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
 
+    // 테이블 뷰 셀 선택 시 호출되는 함수 - 할 일 편집 화면으로 전환
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let toDo = todos[indexPath.row]
         let editVC = AddToDoViewController()
         editVC.delegate = self
-        editVC.textField.text = toDo.title
-        editVC.datePicker.date = toDo.dueDate ?? Date()
-        editVC.isRecurringSwitch.isOn = toDo.isRecurring
+        editVC.toDo = toDo
+        editVC.index = indexPath.row
         let navController = UINavigationController(rootViewController: editVC)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true, completion: nil)
@@ -104,7 +111,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
             completionHandler(true)
         }
-        
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
@@ -118,10 +124,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             completionHandler(true)
         }
         favoriteAction.backgroundColor = .systemYellow
-        
         return UISwipeActionsConfiguration(actions: [favoriteAction])
     }
 
+    // 알림 권한 요청 함수
     func requestNotificationAuthorization() {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
@@ -132,7 +138,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 }
 
+// AddToDoViewController의 델리게이트 메서드 구현
 extension MainViewController: AddToDoViewControllerDelegate {
+    // 새로운 할 일이 추가되었을 때 호출되는 함수
     func didAddToDo(_ toDo: ToDo) {
         todos.append(toDo)
         todos.sort(by: { ($0.dueDate ?? Date.distantFuture) < ($1.dueDate ?? Date.distantFuture) })
@@ -140,6 +148,7 @@ extension MainViewController: AddToDoViewControllerDelegate {
         tableView.reloadData()
     }
 
+    // 할 일이 수정되었을 때 호출되는 함수
     func didEditToDo(_ toDo: ToDo, at index: Int) {
         todos[index] = toDo
         todos.sort(by: { ($0.dueDate ?? Date.distantFuture) < ($1.dueDate ?? Date.distantFuture) })
