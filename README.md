@@ -32,14 +32,14 @@
 
 ## Preview
 
-<img src="https://github.com/yehjinjang/UIKit/assets/101628142/5bd47051-2eb6-4d1d-abe7-44ad91975ef1" alt="Simulator Screenshot - iPhone 15 Pro" width="200"/>
+<img src="https://github.com/yehjinjang/UIKit/assets/101628142/5bd47051-2eb6-4d1d-abe7-44ad91975ef1" alt="Simulator Screenshot - iPhone 15 Pro" width="150"/>
 
-<img src="https://github.com/yehjinjang/UIKit/assets/101628142/004996a5-0ed8-48bf-9c34-84fbdceb7dcb" alt="Simulator Screenshot - iPhone 15 Pro" width="200"/>
+<img src="https://github.com/yehjinjang/UIKit/assets/101628142/004996a5-0ed8-48bf-9c34-84fbdceb7dcb" alt="Simulator Screenshot - iPhone 15 Pro" width="150"/>
 
-<img src="https://github.com/yehjinjang/UIKit/assets/101628142/cb4ef924-58c5-4012-ade0-fa64f8948a92" alt="Simulator Screenshot - iPhone 15 Pro" width="200"/>
+<img src="https://github.com/yehjinjang/UIKit/assets/101628142/cb4ef924-58c5-4012-ade0-fa64f8948a92" alt="Simulator Screenshot - iPhone 15 Pro" width="150"/>
 
-<img src="https://github.com/yehjinjang/UIKit/assets/101628142/a2d8aef4-a3a5-46d8-a617-1094ff2f0172" alt="Simulator Screenshot - iPhone 15 Pro" width="200"/>
+<img src="https://github.com/yehjinjang/UIKit/assets/101628142/a2d8aef4-a3a5-46d8-a617-1094ff2f0172" alt="Simulator Screenshot - iPhone 15 Pro" width="150"/>
 
-<img src="https://github.com/yehjinjang/UIKit/assets/101628142/0458b70b-393e-4014-808a-031bdc078246" alt="Simulator Screenshot - iPhone 15 Pro" width="200"/>
+<img src="https://github.com/yehjinjang/UIKit/assets/101628142/0458b70b-393e-4014-808a-031bdc078246" alt="Simulator Screenshot - iPhone 15 Pro" width="150"/>
 
 
