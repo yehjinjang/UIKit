@@ -4,7 +4,7 @@
 //
 //  Created by 장예진 on 5/24/24.
 //
-
+// MARK: 겹쳐보이는 문제? 때문에 배경색 한번 설정 하고 레이아웃 콘스트레인트 다시 설정해봄 .
 import UIKit
 
 protocol AddToDoViewControllerDelegate: AnyObject {
@@ -17,7 +17,8 @@ class AddToDoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Add ToDo"
+        self.title = "Add To-Do"
+        view.backgroundColor = .white
         setupNavigationBar()
         setupTextField()
     }

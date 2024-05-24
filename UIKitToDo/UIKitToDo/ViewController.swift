@@ -45,6 +45,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let addVC = AddToDoViewController()
         addVC.delegate = self
         let navController = UINavigationController(rootViewController: addVC)
+        navController.modalPresentationStyle = .fullScreen // 모달 표시 스타일 설정
         present(navController, animated: true, completion: nil)
     }
 
