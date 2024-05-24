@@ -33,7 +33,7 @@ class AddToDoViewController: UIViewController {
 
     func setupTextField() {
         textField = UITextField()
-        textField.placeholder = "Enter ToDo"
+        textField.placeholder = "Insert To-Do"
         view.addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
