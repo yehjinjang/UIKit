@@ -37,13 +37,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         ])
     }
 
-    // 네비게이션 바 설정 함수
+    // 네비게이션 바 설정
     func setupNavigationBar() {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addToDo))
         navigationItem.rightBarButtonItem = addButton
     }
 
-    // 새로운 할 일 추가 함수
+    // 새로운 할 일 추가
     @objc func addToDo() {
         let addVC = AddToDoViewController()
         addVC.delegate = self
@@ -52,7 +52,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         present(navController, animated: true, completion: nil)
     }
 
-    // 저장된 할 일 데이터 로드 함수
+    // 저장된 할 일 데이터 로드
     func loadData() {
         if let data = UserDefaults.standard.data(forKey: "todos"),
            let savedTodos = try? JSONDecoder().decode([ToDo].self, from: data) {
@@ -68,12 +68,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
-    // 테이블 뷰 행의 개수를 반환하는 함수
+    // 테이블 뷰 행의 개수를 반환해줌
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return todos.count
     }
 
-    // 테이블 뷰 셀을 구성하는 함수
+    // 테이블 뷰 셀(날짜 및 좋아하는거 등)a
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoCell", for: indexPath)
         let toDo = todos[indexPath.row]
@@ -90,7 +90,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
 
-    // 테이블 뷰 셀 선택 시 호출되는 함수 - 할 일 편집 화면으로 전환
+    // - 할 일 편집 화면으로 전환
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let toDo = todos[indexPath.row]
         let editVC = AddToDoViewController()
@@ -103,7 +103,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    // 오른쪽 스와이프 액션 - 삭제
+    // 오른쪽 swipe- 삭제
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
             self.todos.remove(at: indexPath.row)
@@ -114,7 +114,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
-    // 왼쪽 스와이프 액션 - 즐겨찾기
+    // 왼쪽 swipe - isfavorite
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let favoriteAction = UIContextualAction(style: .normal, title: "Favorite") { (action, view, completionHandler) in
             self.todos[indexPath.row].isFavorite.toggle()
@@ -127,7 +127,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return UISwipeActionsConfiguration(actions: [favoriteAction])
     }
 
-    // 알림 권한 요청 함수
+    // alarm
     func requestNotificationAuthorization() {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in

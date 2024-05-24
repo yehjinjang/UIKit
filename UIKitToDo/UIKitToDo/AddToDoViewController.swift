@@ -34,7 +34,7 @@ class AddToDoViewController: UIViewController {
         loadData()
     }
 
-    // 네비게이션 바 설정 함수
+    // 네비게이션 바 
     func setupNavigationBar() {
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem = cancelButton
@@ -42,7 +42,7 @@ class AddToDoViewController: UIViewController {
         navigationItem.rightBarButtonItem = saveButton
     }
 
-    // 할 일 제목 입력 텍스트 필드 설정 함수
+    // 할 일 제목 입력 텍필설정
     func setupTextField() {
         textField = UITextField()
         textField.placeholder = "Insert To-Do"
@@ -57,7 +57,7 @@ class AddToDoViewController: UIViewController {
         ])
     }
 
-    // 날짜 선택기 설정 함수
+    // 날짜 선택기 설정
     func setupDatePicker() {
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .dateAndTime
@@ -71,7 +71,7 @@ class AddToDoViewController: UIViewController {
         ])
     }
 
-    // 반복 작업 스위치 설정 함수
+    // 반복 작업 스위치 설정
     func setupRecurringSwitch() {
         let label = UILabel()
         label.text = "Repeat Weekly"
@@ -91,7 +91,7 @@ class AddToDoViewController: UIViewController {
         ])
     }
 
-    // 기존 할 일 데이터를 로드하는 함수
+    // 기존 할 일 데이터를 로드하는
     func loadData() {
         if let toDo = toDo {
             textField.text = toDo.title
@@ -100,12 +100,12 @@ class AddToDoViewController: UIViewController {
         }
     }
 
-    // 취소 버튼 액션 함수
+    // 취소 버튼 액션
     @objc func cancel() {
         dismiss(animated: true, completion: nil)
     }
 
-    // 저장 버튼 액션 함수
+    // 저장 버튼 액션
     @objc func save() {
         guard let text = textField.text, !text.isEmpty else { return }
         let toDo = ToDo(
@@ -124,7 +124,7 @@ class AddToDoViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    // 알림 스케줄링 함수
+    // 알림 스케줄링
     func scheduleNotification(for toDo: ToDo) {
         let content = UNMutableNotificationContent()
         content.title = "Reminder"
