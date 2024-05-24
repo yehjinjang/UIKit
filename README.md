@@ -1,6 +1,6 @@
 ## APP-iOS5th - UIKitToDo 실습 
 
-[UIKitTodo 앱 보러가기](https://github.com/yehjinjang/UIKit/tree/main/UIKitToDo)
+[UIKitTodo 코드 보러가기](https://github.com/yehjinjang/UIKit/tree/main/UIKitToDo)
 
 ### Function
 
