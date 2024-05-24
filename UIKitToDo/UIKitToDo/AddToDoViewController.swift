@@ -4,7 +4,8 @@
 //
 //  Created by 장예진 on 5/24/24.
 //
-// MARK: 겹쳐보이는 문제? 때문에 배경색 한번 설정 하고 레이아웃 콘스트레인트 다시 설정해봄 .
+
+
 import UIKit
 
 protocol AddToDoViewControllerDelegate: AnyObject {
@@ -49,7 +50,7 @@ class AddToDoViewController: UIViewController {
 
     @objc func save() {
         guard let text = textField.text, !text.isEmpty else { return }
-        let toDo = ToDo(title: text, isCompleted: false)
+        let toDo = ToDo(title: text, isCompleted: false, isFavorite: false)
         delegate?.didAddToDo(toDo)
         dismiss(animated: true, completion: nil)
     }

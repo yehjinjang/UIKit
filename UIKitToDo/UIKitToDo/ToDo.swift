@@ -11,4 +11,5 @@ import Foundation
 struct ToDo: Codable {
     var title : String
     var isCompleted : Bool
+    var isFavorite : Bool
 }
