@@ -17,8 +17,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.title = "To-Do List"
         setupTableView()
         setupNavigationBar()
-        loadData() 
+        loadData()
         requestNotificationAuthorization()
+
+        // Long Press Gesture Recognizer 추가
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        tableView.addGestureRecognizer(longPressGesture)
     }
 
     // 테이블 뷰 설정 함수
@@ -58,14 +62,29 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
            let savedTodos = try? JSONDecoder().decode([ToDo].self, from: data) {
             todos = savedTodos
         }
-        todos.sort(by: { ($0.dueDate ?? Date.distantFuture) < ($1.dueDate ?? Date.distantFuture) })
+        sortTodos()
     }
 
-    // 할 일 데이터 저장 함수
+    // 할 일 데이터 저장 함수 + 위젯 활동 추가
     func saveData() {
         if let data = try? JSONEncoder().encode(todos) {
             UserDefaults.standard.set(data, forKey: "todos")
+            UserDefaults(suiteName: "group.com.UIKitToDo.widget")?.set(data, forKey: "todos")
+            print("Data saved: \(todos)")
         }
+    }
+
+    // 할 일 정렬 함수
+    func sortTodos() {
+        todos.sort(by: {
+            if $0.isPending != $1.isPending {
+                return !$0.isPending
+            } else if $0.isFavorite != $1.isFavorite {
+                return $0.isFavorite && !$1.isFavorite
+            } else {
+                return ($0.dueDate ?? Date.distantFuture) < ($1.dueDate ?? Date.distantFuture)
+            }
+        })
     }
 
     // 테이블 뷰 행의 개수를 반환해줌
@@ -73,19 +92,25 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return todos.count
     }
 
-    // 테이블 뷰 셀(날짜 및 좋아하는거 등)a
+    // 테이블 뷰 셀 설정
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoCell", for: indexPath)
         let toDo = todos[indexPath.row]
-        cell.textLabel?.text = toDo.isFavorite ? "⭐️ " + toDo.title : toDo.title
+        var config = cell.defaultContentConfiguration()
+        config.text = toDo.isFavorite ? "⭐️ " + toDo.title : toDo.title
+
         if let dueDate = toDo.dueDate {
             let formatter = DateFormatter()
             formatter.dateStyle = .short
             formatter.timeStyle = .short
-            cell.detailTextLabel?.text = formatter.string(from: dueDate)
+            config.secondaryText = formatter.string(from: dueDate)
+        } else if toDo.isPending {
+            config.secondaryText = "yet"
+            config.secondaryTextProperties.color = .red
         } else {
-            cell.detailTextLabel?.text = ""
+            config.secondaryText = ""
         }
+        cell.contentConfiguration = config
         cell.accessoryType = toDo.isCompleted ? .checkmark : .none
         return cell
     }
@@ -103,7 +128,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    // 오른쪽 swipe- 삭제
+    // 오른쪽 swipe - 삭제
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
             self.todos.remove(at: indexPath.row)
@@ -114,11 +139,11 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
-    // 왼쪽 swipe - isfavorite
+    // 왼쪽 swipe - isFavorite
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let favoriteAction = UIContextualAction(style: .normal, title: "Favorite") { (action, view, completionHandler) in
             self.todos[indexPath.row].isFavorite.toggle()
-            self.todos.sort(by: { $0.isFavorite && !$1.isFavorite })
+            self.sortTodos()
             self.saveData()
             self.tableView.reloadData()
             completionHandler(true)
@@ -127,7 +152,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return UISwipeActionsConfiguration(actions: [favoriteAction])
     }
 
-    // alarm
+    // 알람 권한 요청
     func requestNotificationAuthorization() {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
@@ -136,6 +161,46 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
     }
+
+    // Long Press Gesture Recognizer를 처리하는 메서드 추가
+    @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began {
+            let point = gesture.location(in: tableView)
+            if let indexPath = tableView.indexPathForRow(at: point) {
+                showStatusOptions(for: indexPath)
+            }
+        }
+    }
+
+    // 상태 변경 옵션을 표시하는 메서드 추가
+    func showStatusOptions(for indexPath: IndexPath) {
+        let toDo = todos[indexPath.row]
+        let alertController = UIAlertController(title: "Change Status", message: "Select the new status for this task", preferredStyle: .actionSheet)
+
+        let completeAction = UIAlertAction(title: "Complete", style: .default) { _ in
+            self.todos[indexPath.row].isCompleted = true
+            self.todos[indexPath.row].isPending = false
+            self.sortTodos()
+            self.saveData()
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+
+        let pendingAction = UIAlertAction(title: "Pending", style: .default) { _ in
+            self.todos[indexPath.row].isCompleted = false
+            self.todos[indexPath.row].isPending = true
+            self.sortTodos()
+            self.saveData()
+            self.tableView.reloadData()
+        }
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+        alertController.addAction(completeAction)
+        alertController.addAction(pendingAction)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 // AddToDoViewController의 델리게이트 메서드 구현
@@ -143,7 +208,7 @@ extension MainViewController: AddToDoViewControllerDelegate {
     // 새로운 할 일이 추가되었을 때 호출되는 함수
     func didAddToDo(_ toDo: ToDo) {
         todos.append(toDo)
-        todos.sort(by: { ($0.dueDate ?? Date.distantFuture) < ($1.dueDate ?? Date.distantFuture) })
+        sortTodos()
         saveData()
         tableView.reloadData()
     }
@@ -151,7 +216,7 @@ extension MainViewController: AddToDoViewControllerDelegate {
     // 할 일이 수정되었을 때 호출되는 함수
     func didEditToDo(_ toDo: ToDo, at index: Int) {
         todos[index] = toDo
-        todos.sort(by: { ($0.dueDate ?? Date.distantFuture) < ($1.dueDate ?? Date.distantFuture) })
+        sortTodos()
         saveData()
         tableView.reloadData()
     }
