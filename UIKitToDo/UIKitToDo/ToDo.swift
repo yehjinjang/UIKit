@@ -12,4 +12,7 @@ struct ToDo: Codable {
     var title : String
     var isCompleted : Bool
     var isFavorite : Bool
+    var dueDate : Date?
+    var category : String?
+    var isRecurring : Bool
 }
