@@ -15,10 +15,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "To-Do List"
-        setupTableView() // 테이블 뷰 설정
-        setupNavigationBar() // 네비게이션 바 설정
-        loadData() // 저장된 데이터 로드
-        requestNotificationAuthorization() // 알림 권한 요청
+        setupTableView()
+        setupNavigationBar()
+        loadData() 
+        requestNotificationAuthorization()
     }
 
     // 테이블 뷰 설정 함수
