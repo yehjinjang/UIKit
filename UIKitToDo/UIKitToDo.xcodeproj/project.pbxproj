@@ -13,9 +13,22 @@
 		B8F95D942C0010E000AF15EF /* Base in Resources */ = {isa = PBXBuildFile; fileRef = B8F95D932C0010E000AF15EF /* Base */; };
 		B8F95D962C0010E200AF15EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8F95D952C0010E200AF15EF /* Assets.xcassets */; };
 		B8F95D992C0010E200AF15EF /* Base in Resources */ = {isa = PBXBuildFile; fileRef = B8F95D982C0010E200AF15EF /* Base */; };
-		B8F95DA12C00135C00AF15EF /* ToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F95DA02C00135C00AF15EF /* ToDo.swift */; };
 		B8F95DA32C00144500AF15EF /* AddToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F95DA22C00144500AF15EF /* AddToDoViewController.swift */; };
+		B8F95DC32C00302600AF15EF /* ToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F95DA02C00135C00AF15EF /* ToDo.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B8F95DC02C002EF300AF15EF /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B8F95D892C0010E000AF15EF /* UIKitToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -26,7 +39,7 @@
 		B8F95D952C0010E200AF15EF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B8F95D982C0010E200AF15EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B8F95D9A2C0010E200AF15EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B8F95DA02C00135C00AF15EF /* ToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDo.swift; sourceTree = "<group>"; };
+		B8F95DA02C00135C00AF15EF /* ToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDo.swift; sourceTree = "<group>"; usesTabs = 0; };
 		B8F95DA22C00144500AF15EF /* AddToDoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToDoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,6 +96,7 @@
 				B8F95D852C0010E000AF15EF /* Sources */,
 				B8F95D862C0010E000AF15EF /* Frameworks */,
 				B8F95D872C0010E000AF15EF /* Resources */,
+				B8F95DC02C002EF300AF15EF /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -145,10 +159,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8F95D912C0010E000AF15EF /* ViewController.swift in Sources */,
+				B8F95DC32C00302600AF15EF /* ToDo.swift in Sources */,
 				B8F95D8D2C0010E000AF15EF /* AppDelegate.swift in Sources */,
 				B8F95DA32C00144500AF15EF /* AddToDoViewController.swift in Sources */,
 				B8F95D8F2C0010E000AF15EF /* SceneDelegate.swift in Sources */,
-				B8F95DA12C00135C00AF15EF /* ToDo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
